@@ -1,0 +1,81 @@
+<div class="admin-container">
+  <div class="header-section">
+    <h2>Gestión de Usuarios</h2>
+    <p>Administra los accesos de tutores, estudiantes y administradores.</p>
+  </div>
+
+  <div class="card form-card">
+    <h3>{{ editandoId ? 'Editar Usuario' : 'Nuevo Usuario' }}</h3>
+    
+    <form [formGroup]="usuarioForm" (ngSubmit)="guardarUsuario()" class="crud-form">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Nombre Completo</label>
+          <input type="text" formControlName="nombre_completo" placeholder="Ej. Juan Pérez">
+        </div>
+        
+        <div class="form-group">
+          <label>Correo Electrónico</label>
+          <input type="email" formControlName="email" placeholder="juan@correo.com">
+        </div>
+
+        <div class="form-group">
+          <label>Rol en el Sistema</label>
+          <select formControlName="id_rol">
+            <option value="">Seleccione un rol...</option>
+            <option value="1">Administrador</option>
+            <option value="2">Tutor</option>
+            <option value="3">Estudiante</option>
+          </select>
+        </div>
+
+        <div class="form-group" *ngIf="!editandoId">
+          <label>Contraseña Temporal</label>
+          <input type="password" formControlName="password" placeholder="••••••••">
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn-cancel" *ngIf="editandoId" (click)="cancelarEdicion()">Cancelar</button>
+        <button type="submit" class="btn-save" [disabled]="usuarioForm.invalid">
+          {{ editandoId ? 'Actualizar Datos' : 'Registrar Usuario' }}
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <div class="card table-card">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Correo</th>
+          <th>Rol</th>
+          <th>Estado</th>
+          <th>Test VAK</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of usuarios">
+          <td>#{{ user.id_usuario }}</td>
+          <td>{{ user.nombre_completo }}</td>
+          <td>{{ user.email }}</td>
+          <td><span class="badge" [ngClass]="user.nombre_rol">{{ user.nombre_rol }}</span></td>
+          <td>
+            <span class="badge" [ngStyle]="{'background-color': user.estado === 'pendiente' ? '#f59e0b' : '#10b981', 'color': 'white'}">
+              {{ user.estado | uppercase }}
+            </span>
+          </td>
+          <td>{{ user.estilo_vak || 'N/A' }}</td>
+          <td class="action-buttons">
+            <button *ngIf="user.estado === 'pendiente'" class="btn-icon" style="background-color: #10b981; color: white;" (click)="aprobarUsuario(user)" title="Aprobar Usuario">✔️</button>
+            <button class="btn-icon edit" (click)="editarUsuario(user)" title="Editar">✏️</button>
+            <button class="btn-icon delete" (click)="eliminarUsuario(user.id_usuario)" title="Eliminar">🗑️</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

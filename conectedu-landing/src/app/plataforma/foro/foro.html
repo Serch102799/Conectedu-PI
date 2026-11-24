@@ -1,0 +1,37 @@
+<div class="foro-container">
+  
+  <header class="foro-header">
+    <div class="header-text">
+      <h2>Foro Estudiantil</h2>
+      <p>Conecta con tus compañeros, resuelve dudas y construyamos juntos una red de apoyo.</p>
+    </div>
+    <button class="btn-nuevo-tema">+ Nuevo Tema</button>
+  </header>
+
+  <div class="lista-temas">
+    <div class="tema-card" *ngFor="let tema of temasDiscusion">
+      
+      <div class="tema-contenido">
+        <span class="tag-categoria" 
+              [style.backgroundColor]="tema.colorTag + '20'" 
+              [style.color]="tema.colorTag">
+          {{ tema.categoria }}
+        </span>
+        <h3>{{ tema.titulo }}</h3>
+        <p class="tema-meta">
+          Publicado por <strong>{{ tema.autor }}</strong> • {{ tema.fecha }}
+        </p>
+      </div>
+
+      <div class="tema-acciones">
+        <div class="estadistica">
+          <span class="numero">{{ tema.respuestas }}</span>
+          <span class="label">Respuestas</span>
+        </div>
+        <button class="btn-ver-tema">Ver discusión</button>
+      </div>
+
+    </div>
+  </div>
+
+</div>

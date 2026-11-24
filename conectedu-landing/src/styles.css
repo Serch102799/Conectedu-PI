@@ -1,0 +1,67 @@
+/* You can add global styles to this file, and also import other style files */
+/* Paleta de colores y variables globales */
+:root {
+  --primary-color: #004b93; /* Azul educativo */
+  --secondary-color: #f39c12; /* Naranja de acento */
+  --bg-color: #f8f9fa;
+  --text-color: #333333;
+  --white: #ffffff;
+}
+
+/* Scroll fluido para los enlaces del navbar */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  color: var(--text-color);
+  background-color: var(--bg-color);
+  line-height: 1.6;
+}
+
+/* Estilos compartidos para las secciones */
+section {
+  padding: 5rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+h2 {
+  font-size: 2.5rem;
+  margin-bottom: 2.5rem;
+  color: var(--primary-color);
+}
+/* =========================================
+   ANIMACIONES DE SCROLL (REVEAL)
+   ========================================= */
+
+/* Estado inicial oculto */
+.reveal-up, .reveal-left, .reveal-right {
+  opacity: 0;
+  transition: all 0.9s cubic-bezier(0.5, 0, 0, 1);
+}
+
+.reveal-up {
+  transform: translateY(60px);
+}
+
+.reveal-left {
+  transform: translateX(-60px);
+}
+
+.reveal-right {
+  transform: translateX(60px);
+}
+
+.reveal-visible {
+  opacity: 1 !important;
+  transform: translate(0, 0) !important;
+}
+
+.delay-1 { transition-delay: 0.1s; }
+.delay-2 { transition-delay: 0.2s; }
+.delay-3 { transition-delay: 0.3s; }

@@ -1,0 +1,208 @@
+.test-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.seccion-header { margin-bottom: 2rem; }
+.seccion-header h2 { color: var(--primary-color, #004b93); font-size: 2rem; margin-bottom: 0.5rem;}
+.seccion-header p { color: #666; font-size: 1.1rem; }
+
+/* Animación global de transición */
+.animate-fade {
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+/* --- VISTA 1: LISTA --- */
+.examenes-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.examen-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  border: 1px solid #eaeaea;
+}
+
+.examen-icono {
+  font-size: 2.5rem;
+  margin-right: 1.5rem;
+  background: #f4f7f6;
+  width: 70px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+}
+
+.examen-info { flex: 1; }
+.materia-tag { font-size: 0.8rem; font-weight: bold; color: #f39c12; text-transform: uppercase; letter-spacing: 1px;}
+.examen-info h3 { margin: 0.3rem 0; color: #333; font-size: 1.3rem; }
+.examen-detalles { margin: 0; color: #777; font-size: 0.95rem; }
+
+.btn-comenzar {
+  background: var(--primary-color, #004b93);
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+.btn-comenzar:hover { background: #00366b; }
+
+/* --- VISTA 2: TOMANDO EXAMEN --- */
+.vista-examen {
+  background: white;
+  border-radius: 16px;
+  padding: 2.5rem;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+}
+
+.examen-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #f0f0f0;
+  padding-bottom: 1rem;
+  margin-bottom: 2rem;
+}
+
+.examen-header h3 { color: #777; margin: 0; }
+.progreso-texto { font-weight: bold; color: var(--primary-color, #004b93); }
+
+.pregunta-texto {
+  font-size: 1.6rem;
+  color: #333;
+  margin-bottom: 2rem;
+  line-height: 1.4;
+}
+
+.opciones-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.opcion-item {
+  display: flex;
+  align-items: center;
+  padding: 1.2rem;
+  border: 2px solid #eaeaea;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 1.1rem;
+  color: #555;
+}
+
+.opcion-item:hover { border-color: #bbd3e9; background: #f8fbff; }
+
+.opcion-item.seleccionada {
+  border-color: var(--primary-color, #004b93);
+  background: #f0f6fc;
+  font-weight: bold;
+  color: var(--primary-color, #004b93);
+}
+
+.radio-custom {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+  margin-right: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.opcion-item.seleccionada .radio-custom {
+  border-color: var(--primary-color, #004b93);
+}
+.opcion-item.seleccionada .radio-custom::after {
+  content: '';
+  width: 10px;
+  height: 10px;
+  background: var(--primary-color, #004b93);
+  border-radius: 50%;
+}
+
+.examen-footer {
+  margin-top: 2.5rem;
+  text-align: right;
+}
+
+.btn-siguiente {
+  background: #f39c12;
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-siguiente:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+/* --- VISTA 3: RESULTADOS --- */
+.vista-resultados {
+  display: flex;
+  justify-content: center;
+}
+
+.resultado-card {
+  background: white;
+  border-radius: 16px;
+  padding: 3rem;
+  text-align: center;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+  max-width: 500px;
+  width: 100%;
+}
+
+.icono-resultado { font-size: 5rem; margin-bottom: 1rem; }
+.resultado-card h2 { color: #333; margin-bottom: 0.5rem; font-size: 2rem; }
+
+.puntaje-circulo {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border: 8px solid var(--primary-color, #004b93);
+  margin: 2rem auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.puntaje-numero { font-size: 3rem; font-weight: bold; color: var(--primary-color, #004b93); line-height: 1;}
+.puntaje-total { font-size: 1.2rem; color: #777; }
+
+.mensaje-feedback { font-size: 1.1rem; color: #555; margin-bottom: 2rem; }
+
+.btn-volver {
+  background: var(--primary-color, #004b93);
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

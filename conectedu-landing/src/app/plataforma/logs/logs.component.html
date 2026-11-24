@@ -1,0 +1,41 @@
+<div class="admin-container">
+  <div class="header-section">
+    <h2>Registros del Sistema</h2>
+    <p>Registro de actividades, movimientos y accesos en la plataforma.</p>
+  </div>
+
+  <div class="card table-card">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Fecha y Hora</th>
+          <th>Usuario (Autor)</th>
+          <th>Acción</th>
+          <th>Módulo</th>
+          <th>Detalles</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let log of logs">
+          <td>{{ log.fecha_hora | date:'dd/MM/yyyy HH:mm' }}</td>
+          <td><strong>{{ log.usuario || 'Sistema/Desconocido' }}</strong></td>
+          <td>
+            <span class="badge" [ngClass]="{'estudiante': log.accion === 'CREAR', 'tutor': log.accion === 'ACTUALIZAR', 'admin': log.accion === 'ELIMINAR' || log.accion === 'LOGIN'}">
+              {{ log.accion }}
+            </span>
+          </td>
+          <td>{{ log.tabla_afectada | uppercase }}</td>
+          <td style="max-width: 300px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="{{ log.detalle }}">
+            {{ log.detalle }}
+          </td>
+        </tr>
+        
+        <tr *ngIf="logs.length === 0">
+          <td colspan="5" style="text-align: center; padding: 2rem; color: #666;">
+            Aún no hay movimientos registrados en el sistema.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

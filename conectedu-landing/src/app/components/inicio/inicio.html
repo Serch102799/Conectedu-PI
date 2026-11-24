@@ -1,0 +1,42 @@
+<section class="hero-light">
+  <div class="hero-grid">
+    
+    <div class="hero-content">
+      <span class="badge-academico">Innovación Educativa en Córdoba</span>
+
+      <div class="carousel-container">
+        <div *ngFor="let slide of slides; let i = index">
+          <div *ngIf="i === currentSlide" class="slide-content animate-fade-in">
+            <h1 class="academic-title">
+              {{ slide.titulo }}<br>
+              <span class="text-highlight">{{ slide.resaltado }}</span>
+            </h1>
+            <p class="hero-subtitle">{{ slide.descripcion }}</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="cta-group">
+        <a href="#conocenos" class="btn-primary-solid">Conoce el Proyecto</a>
+        <a href="#servicios" class="btn-primary-outline">Ver Servicios</a>
+      </div>
+
+      <div class="carousel-indicators">
+        <span class="dot" 
+              *ngFor="let slide of slides; let i = index" 
+              [class.active-dot]="i === currentSlide" 
+              (click)="setSlide(i)">
+        </span>
+      </div>
+    </div>
+
+    <div class="hero-image-wrapper">
+      <img [src]="slides[currentSlide].imagen" 
+           alt="Estudiantes en Córdoba" 
+           class="hero-img animate-fade-in">
+      
+      <div class="decoration-box"></div>
+    </div>
+
+  </div>
+</section>

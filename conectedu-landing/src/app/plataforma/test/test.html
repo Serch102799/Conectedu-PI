@@ -1,0 +1,71 @@
+<div class="test-container">
+
+  <div *ngIf="vistaActual === 'lista'" class="vista-lista animate-fade">
+    <header class="seccion-header">
+      <h2>Evaluaciones Pendientes</h2>
+      <p>Mide tus conocimientos y descubre en qué áreas puedes mejorar con nuestras tutorías.</p>
+    </header>
+
+    <div class="examenes-grid">
+      <div class="examen-card" *ngFor="let examen of examenesPendientes">
+        <div class="examen-icono">{{ examen.icono }}</div>
+        <div class="examen-info">
+          <span class="materia-tag">{{ examen.materia }}</span>
+          <h3>{{ examen.titulo }}</h3>
+          <p class="examen-detalles">
+            <span>⏱️ {{ examen.tiempo }}</span> • <span>📝 {{ examen.preguntas }} preguntas</span>
+          </p>
+        </div>
+        <button class="btn-comenzar" (click)="comenzarExamen(examen.id)">Comenzar</button>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="vistaActual === 'examen'" class="vista-examen animate-fade">
+    <div class="examen-header">
+      <h3>Diagnóstico de Matemáticas</h3>
+      <div class="progreso-texto">Pregunta {{ preguntaActualIndex + 1 }} de {{ preguntasSimuladas.length }}</div>
+    </div>
+
+    <div class="pregunta-contenedor">
+      <h2 class="pregunta-texto">{{ preguntasSimuladas[preguntaActualIndex].pregunta }}</h2>
+      
+      <div class="opciones-lista">
+        <div class="opcion-item" 
+             *ngFor="let opcion of preguntasSimuladas[preguntaActualIndex].opciones"
+             [class.seleccionada]="respuestaSeleccionada === opcion"
+             (click)="seleccionarOpcion(opcion)">
+          <div class="radio-custom"></div>
+          <span>{{ opcion }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="examen-footer">
+      <button class="btn-siguiente" 
+              [disabled]="!respuestaSeleccionada" 
+              (click)="siguientePregunta()">
+        {{ preguntaActualIndex === preguntasSimuladas.length - 1 ? 'Finalizar Examen' : 'Siguiente Pregunta' }}
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="vistaActual === 'resultados'" class="vista-resultados animate-fade">
+    <div class="resultado-card">
+      <div class="icono-resultado">🏆</div>
+      <h2>¡Examen Finalizado!</h2>
+      <p>Has completado el Diagnóstico de Matemáticas.</p>
+      
+      <div class="puntaje-circulo">
+        <span class="puntaje-numero">{{ puntaje }}</span>
+        <span class="puntaje-total">de {{ preguntasSimuladas.length }}</span>
+      </div>
+      
+      <p class="mensaje-feedback" *ngIf="puntaje === preguntasSimuladas.length">¡Excelente trabajo! Tienes un dominio perfecto del tema.</p>
+      <p class="mensaje-feedback" *ngIf="puntaje < preguntasSimuladas.length">¡Buen esfuerzo! Te recomendamos repasar los temas en la sección de Tutorías.</p>
+
+      <button class="btn-volver" (click)="volverAlInicio()">Volver a Evaluaciones</button>
+    </div>
+  </div>
+
+</div>

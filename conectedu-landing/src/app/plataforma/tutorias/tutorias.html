@@ -1,0 +1,48 @@
+<div class="tutorias-container animate-fade">
+  
+  <header class="seccion-header">
+    <h2>Tutorías Personalizadas</h2>
+    <p>No estás solo. Agenda una sesión 1 a 1 con nuestros expertos y resuelve todas tus dudas a tu propio ritmo.</p>
+  </header>
+
+  <div class="tutores-grid">
+    <div class="tutor-card" *ngFor="let tutor of tutores">
+      
+      <div class="tutor-header">
+        <div class="tutor-avatar" [style.backgroundColor]="tutor.color + '20'" [style.color]="tutor.color">
+          {{ tutor.avatar }}
+        </div>
+        <div class="tutor-info">
+          <h3>{{ tutor.nombre }}</h3>
+          <span class="tutor-materia">{{ tutor.materia }}</span>
+        </div>
+      </div>
+
+      <div class="tutor-body">
+        <div class="info-bloque">
+          <span class="icono-mini">🎯</span>
+          <div>
+            <strong>Enfoque:</strong>
+            <p>{{ tutor.enfoque }}</p>
+          </div>
+        </div>
+        
+        <div class="info-bloque">
+          <span class="icono-mini">🕒</span>
+          <div>
+            <strong>Disponibilidad:</strong>
+            <p>{{ tutor.disponibilidad }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="tutor-footer">
+        <button class="btn-agendar" (click)="agendar(tutor)">
+          Agendar Sesión
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+</div>

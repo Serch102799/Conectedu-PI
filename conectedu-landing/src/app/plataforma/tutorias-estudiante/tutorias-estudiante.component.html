@@ -1,0 +1,40 @@
+<div class="admin-container">
+  <div class="header-section">
+    <h2>Tutores</h2>
+    <p>Encuentra al experto ideal para resolver tus dudas y agenda una asesoría personalizada.</p>
+  </div>
+
+  <div class="tutores-grid">
+    
+    <div class="tutor-card" *ngFor="let tutor of tutores">
+      
+      <div class="tutor-avatar">
+        {{ tutor.nombre_completo.charAt(0) | uppercase }}
+      </div>
+
+      <div class="tutor-info">
+        <h3>{{ tutor.nombre_completo }}</h3>
+        
+        <span class="badge tutor-badge">
+          {{ tutor.especialidad ? tutor.especialidad : 'Tutor General' }}
+        </span>
+
+        <p class="tutor-bio">
+          {{ tutor.biografia ? tutor.biografia : 'Este tutor aún no ha agregado una descripción a su perfil, pero está listo para ayudarte.' }}
+        </p>
+      </div>
+
+      <div class="tutor-actions">
+        <button class="btn-agendar" (click)="abrirModalAgendar(tutor)">
+          Agendar Asesoría
+        </button>
+      </div>
+
+    </div>
+
+    <div class="empty-state" *ngIf="tutores.length === 0">
+      <p>Aún no hay tutores disponibles en la plataforma.</p>
+    </div>
+
+  </div>
+</div>

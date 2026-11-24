@@ -1,0 +1,194 @@
+<div class="prediccion-container" [ngClass]="{'full-width': !idAlumnoInput}">
+  <div class="header-section">
+    <div>
+      <h2>Panel de Predicción de Deserción Escolar</h2>
+      <p class="subtitle">Análisis inteligente para identificar alumnos en riesgo.</p>
+    </div>
+    <div class="header-status" *ngIf="evaluandoEnLote">
+      <div class="spinner-mini primary"></div>
+      <span>Autoevaluando alumnos...</span>
+    </div>
+  </div>
+  
+  <!-- MODO INDIVIDUAL -->
+  <div *ngIf="idAlumnoInput" class="individual-mode">
+    <div class="input-section">
+      <button (click)="ejecutarModelo(idAlumnoInput)" [disabled]="cargandoID === idAlumnoInput">
+        <span *ngIf="cargandoID !== idAlumnoInput">Evaluar Alumno ID: {{idAlumnoInput}}</span>
+        <span *ngIf="cargandoID === idAlumnoInput"><div class="spinner-mini"></div> Evaluando...</span>
+      </button>
+    </div>
+
+    <div *ngIf="resultadoIndividual" class="result-card fade-in" [ngClass]="{
+        'riesgo-alto': resultadoIndividual?.resultado?.riesgo_alto === true, 
+        'riesgo-bajo': resultadoIndividual?.resultado?.riesgo_alto === false
+      }">
+      <div class="header-resultado">
+        <h3>Resultados de la Evaluación</h3>
+        <span class="badge-riesgo" *ngIf="resultadoIndividual?.resultado">
+          Riesgo {{resultadoIndividual.resultado.riesgo_alto ? 'Alto' : 'Bajo'}} 
+          ({{ (resultadoIndividual.resultado.probabilidad * 100) | number:'1.0-2' }}%)
+        </span>
+      </div>
+      <div class="resultado-content">
+        <div *ngIf="resultadoIndividual.error" class="error-msg">
+          {{ resultadoIndividual.error }}
+        </div>
+        <div *ngIf="!resultadoIndividual.error">
+          <pre>{{ resultadoIndividual | json }}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODO TABLA (Panel General) -->
+  <div *ngIf="!idAlumnoInput" class="table-mode fade-in">
+    <div class="search-bar">
+      <input type="text" placeholder="Buscar por nombre, email o ID..." (input)="filtrarAlumnos($event)" class="search-input">
+    </div>
+
+    <div class="table-responsive">
+      <table class="students-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Estudiante</th>
+            <th>Perfil VAK</th>
+            <th>Resultado IA</th>
+            <th>Detalles</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let alumno of alumnosFiltrados">
+            <td>{{ alumno.id_usuario }}</td>
+            <td>
+              <div class="fw-600">{{ alumno.nombre_completo }}</div>
+              <div class="text-muted">{{ alumno.email }}</div>
+            </td>
+            <td><span class="vak-badge">{{ alumno.estilo_vak || 'Por definir' }}</span></td>
+            <td>
+              <div *ngIf="resultadosIA[alumno.id_usuario]" class="result-cell fade-in">
+                <div *ngIf="resultadosIA[alumno.id_usuario].error" class="error-sm">Error de IA</div>
+                <div *ngIf="!resultadosIA[alumno.id_usuario].error" class="badge-riesgo"
+                     [ngClass]="{'bg-danger': resultadosIA[alumno.id_usuario].resultado.riesgo_alto, 'bg-success': !resultadosIA[alumno.id_usuario].resultado.riesgo_alto}">
+                  {{resultadosIA[alumno.id_usuario].resultado.riesgo_alto ? 'Alto Riesgo' : 'Estable'}} 
+                  <span class="prob-text">({{ (resultadosIA[alumno.id_usuario].resultado.probabilidad * 100) | number:'1.0-2' }}%)</span>
+                </div>
+              </div>
+              <div *ngIf="!resultadosIA[alumno.id_usuario] && cargandoID === alumno.id_usuario" class="loading-cell">
+                <div class="spinner-mini primary"></div>
+              </div>
+              <div *ngIf="!resultadosIA[alumno.id_usuario] && cargandoID !== alumno.id_usuario" class="text-muted">Pendiente</div>
+            </td>
+            <td>
+              <button class="btn-evaluar-sm" (click)="ejecutarModelo(alumno.id_usuario)" [disabled]="cargandoID === alumno.id_usuario">
+                <span *ngIf="cargandoID === alumno.id_usuario">Cargando...</span>
+                <span *ngIf="cargandoID !== alumno.id_usuario && !resultadosIA[alumno.id_usuario]">Evaluar</span>
+                <span *ngIf="cargandoID !== alumno.id_usuario && resultadosIA[alumno.id_usuario] && !resultadosIA[alumno.id_usuario].error">Ver Cédula</span>
+              </button>
+            </td>
+          </tr>
+          <tr *ngIf="alumnosFiltrados.length === 0">
+            <td colspan="5" class="text-center no-data">No se encontraron estudiantes.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL CÉDULA DE EVALUACIÓN -->
+<div class="modal-overlay" *ngIf="modalAbierto" (click)="cerrarModal()">
+  <div class="modal-content fade-in-up" (click)="$event.stopPropagation()">
+    <button class="btn-close" (click)="cerrarModal()">✕</button>
+    
+    <div class="modal-header">
+      <div class="avatar-large">{{ alumnoSeleccionado?.nombre_completo?.charAt(0) | uppercase }}</div>
+      <div class="modal-title">
+        <h3>Cédula de Evaluación IA</h3>
+        <p class="student-name">{{ alumnoSeleccionado?.nombre_completo }} <span class="id-badge">#{{ alumnoSeleccionado?.id_usuario }}</span></p>
+      </div>
+    </div>
+
+    <div class="modal-body" *ngIf="datosEstadisticos">
+      
+      <!-- Resultado Principal -->
+      <div class="main-result" [ngClass]="{'danger-bg': datosEstadisticos.resultado.riesgo_alto, 'success-bg': !datosEstadisticos.resultado.riesgo_alto}">
+        <div class="result-icon">{{ datosEstadisticos.resultado.riesgo_alto ? '⚠️' : '✅' }}</div>
+        <div class="result-text">
+          <h4>{{ datosEstadisticos.resultado.riesgo_alto ? 'Riesgo de Deserción Detectado' : 'Estudiante Estable' }}</h4>
+          <p>{{ datosEstadisticos.resultado.mensaje }}</p>
+        </div>
+      </div>
+
+      <!-- Probabilidad Progress Bar -->
+      <div class="prob-section">
+        <div class="prob-header">
+          <span>Probabilidad de Deserción Calculada</span>
+          <span class="prob-value">{{ (datosEstadisticos.resultado.probabilidad * 100) | number:'1.0-2' }}%</span>
+        </div>
+        <div class="prob-bar-bg">
+          <div class="prob-bar-fill" 
+               [style.width.%]="datosEstadisticos.resultado.probabilidad * 100"
+               [ngClass]="{'fill-danger': datosEstadisticos.resultado.riesgo_alto, 'fill-success': !datosEstadisticos.resultado.riesgo_alto}">
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+      
+      <h4 class="section-title">Análisis de Factores (Datos Reales)</h4>
+      <div class="stats-grid">
+        
+        <!-- Promedio -->
+        <div class="stat-card">
+          <div class="stat-icon purple">📊</div>
+          <div class="stat-info">
+            <span class="stat-label">Promedio de Calificaciones</span>
+            <span class="stat-number">{{ datosEstadisticos.datos_alumno.promedio | number:'1.1-2' }} / 10</span>
+            <div class="mini-bar-bg">
+              <div class="mini-bar-fill purple" [style.width.%]="(datosEstadisticos.datos_alumno.promedio / 10) * 100"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Racha -->
+        <div class="stat-card">
+          <div class="stat-icon orange">🔥</div>
+          <div class="stat-info">
+            <span class="stat-label">Racha Activa</span>
+            <span class="stat-number">{{ datosEstadisticos.datos_alumno.racha_actual }} días</span>
+          </div>
+        </div>
+
+        <!-- Inactividad -->
+        <div class="stat-card">
+          <div class="stat-icon red">⏳</div>
+          <div class="stat-info">
+            <span class="stat-label">Días Inactivos</span>
+            <span class="stat-number">{{ datosEstadisticos.datos_alumno.dias_inactivos }} días</span>
+          </div>
+        </div>
+
+        <!-- Tutorías -->
+        <div class="stat-card">
+          <div class="stat-icon blue">👨‍🏫</div>
+          <div class="stat-info">
+            <span class="stat-label">Tutorías Asistidas</span>
+            <span class="stat-number">{{ datosEstadisticos.datos_alumno.tutorias }} sesiones</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="model-info">
+        <small>Evaluado por: <strong>{{ datosEstadisticos.modelo_prediccion }}</strong> | Tiempo de inferencia: {{ datosEstadisticos.tiempo_ejecucion_ms }}ms</small>
+      </div>
+
+    </div>
+
+    <div class="modal-body text-center empty-modal" *ngIf="!datosEstadisticos">
+      <p>No se encontraron datos estadísticos para mostrar la cédula.</p>
+    </div>
+  </div>
+</div>

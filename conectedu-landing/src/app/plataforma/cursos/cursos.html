@@ -1,0 +1,63 @@
+<div class="admin-container">
+  <div class="header-section">
+    <h2>Catálogo de Cursos</h2>
+    <p>Gestiona las materias y asigna tutores a cada una.</p>
+  </div>
+
+  <div class="card form-card" *ngIf="rolUsuario === 'admin'">
+    <h3>{{ editandoId ? 'Editar Curso' : 'Nuevo Curso' }}</h3>
+    <form [formGroup]="cursoForm" (ngSubmit)="guardarCurso()" class="crud-form">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Nombre de la Materia</label>
+          <input type="text" formControlName="nombre" placeholder="Ej. Matemáticas Básicas">
+        </div>
+        
+        <div class="form-group">
+          <label>Tutor Asignado</label>
+          <select formControlName="id_tutor">
+            <option value="">Sin tutor asignado</option>
+            <option *ngFor="let tutor of tutores" [value]="tutor.id_usuario">
+              {{ tutor.nombre_completo }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group" style="grid-column: 1 / -1;">
+          <label>Descripción</label>
+          <input type="text" formControlName="descripcion" placeholder="Breve descripción del curso...">
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn-cancel" *ngIf="editandoId" (click)="cancelarEdicion()">Cancelar</button>
+        <button type="submit" class="btn-save" [disabled]="cursoForm.invalid">Guardar Curso</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="card table-card">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Materia</th>
+          <th>Tutor Asignado</th>
+          <th>Estado</th>
+          <th *ngIf="rolUsuario === 'admin'">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let curso of cursos">
+          <td>#{{ curso.id_curso }}</td>
+          <td>{{ curso.nombre }}</td>
+          <td>{{ curso.tutor || 'Sin asignar' }}</td>
+          <td><span class="badge" [ngClass]="curso.estado ? 'estudiante' : 'cancelada'">{{ curso.estado ? 'Activo' : 'Inactivo' }}</span></td>
+          <td class="action-buttons" *ngIf="rolUsuario === 'admin'">
+            <button class="btn-icon edit" (click)="editarCurso(curso)">✏️</button>
+            <button class="btn-icon delete" (click)="eliminarCurso(curso.id_curso)">🗑️</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

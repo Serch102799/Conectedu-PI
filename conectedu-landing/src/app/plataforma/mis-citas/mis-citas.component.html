@@ -1,0 +1,76 @@
+<div class="admin-container">
+  <div class="header-section">
+    <h2>Mi Agenda de Tutorías</h2>
+    <p>Revisa tus próximas sesiones, accede a los enlaces de reunión y gestiona tus tiempos.</p>
+  </div>
+
+  <div class="card table-card">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Fecha y Hora</th>
+          <th>{{ miRol === 'tutor' ? 'Estudiante' : 'Tutor' }}</th>
+          <th>Tema a tratar</th>
+          <th>Estado</th>
+          <th>Reunión</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let cita of citas">
+          <td>
+            <strong>{{ cita.fecha_cita | date:'dd/MM/yyyy' }}</strong><br>
+            <span style="color: #666; font-size: 0.9em;">{{ cita.hora_inicio }} - {{ cita.hora_fin }}</span>
+          </td>
+          
+          <td>
+            <strong>{{ miRol === 'tutor' ? cita.nombre_estudiante : cita.nombre_tutor }}</strong>
+            <br>
+            <span style="color: #666; font-size: 0.8em;">{{ miRol === 'tutor' ? cita.correo_estudiante : '' }}</span>
+          </td>
+
+          <td style="max-width: 250px; overflow: hidden; text-overflow: ellipsis;">
+            {{ cita.tema_duda }}
+          </td>
+
+          <td>
+            <span class="badge" 
+                  [ngClass]="{
+                    'estado-pendiente': cita.estado === 'Pendiente',
+                    'estado-aceptada': cita.estado === 'Aceptada',
+                    'estado-completada': cita.estado === 'Completada',
+                    'estado-cancelada': cita.estado === 'Cancelada'
+                  }">
+              {{ cita.estado }}
+            </span>
+          </td>
+
+          <td>
+            <a *ngIf="cita.enlace_reunion && cita.estado !== 'Cancelada'" 
+               [href]="cita.enlace_reunion" target="_blank" class="btn-link">
+              Unirse
+            </a>
+            <span *ngIf="!cita.enlace_reunion" style="color: #999; font-size: 0.85em;">Sin enlace</span>
+          </td>
+
+          <td>
+            <div class="acciones-flex">
+              <ng-container *ngIf="miRol === 'tutor'">
+                <button *ngIf="cita.estado === 'Pendiente'" class="btn-action success" (click)="actualizarEstado(cita.id_cita, 'Aceptada')" title="Aceptar Cita">✔️</button>
+                <button *ngIf="cita.estado === 'Aceptada'" class="btn-action primary" (click)="actualizarEstado(cita.id_cita, 'Completada')" title="Marcar Completada">🎓</button>
+              </ng-container>
+
+              <button *ngIf="cita.estado !== 'Cancelada' && cita.estado !== 'Completada'" class="btn-action danger" (click)="actualizarEstado(cita.id_cita, 'Cancelada')" title="Cancelar Cita">❌</button>
+            </div>
+          </td>
+        </tr>
+
+        <tr *ngIf="citas.length === 0">
+          <td colspan="6" style="text-align: center; padding: 2rem; color: #666;">
+            Aún no tienes tutorías registradas en tu historial.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

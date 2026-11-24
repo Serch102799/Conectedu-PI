@@ -1,0 +1,137 @@
+<div class="layout-container" [ngClass]="{'sidebar-collapsed': isSidebarCollapsed}">
+  
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <img src="/Logo_CONECTEDU.png" alt="CONECTEDU" class="sidebar-logo" *ngIf="!isSidebarCollapsed">
+      <img src="/Logo_CONECTEDU.png" alt="CE" class="sidebar-logo mini" *ngIf="isSidebarCollapsed">
+    </div>
+
+    <nav class="sidebar-nav">
+      
+      <a *ngIf="rolUsuario === 'estudiante'" routerLink="/plataforma/inicio" routerLinkActive="active" class="nav-item">
+        <span class="icon">📊</span><span class="text" *ngIf="!isSidebarCollapsed">Mi Progreso</span>
+      </a>
+
+      <a *ngIf="rolUsuario === 'admin'" routerLink="/plataforma/usuarios" routerLinkActive="active" class="nav-item">
+        <span class="icon">👥</span><span class="text" *ngIf="!isSidebarCollapsed">Gestión de Usuarios</span>
+      </a>
+      <a routerLink="/plataforma/cursos" routerLinkActive="active" class="nav-item">
+        <span class="icon">📚</span><span class="text" *ngIf="!isSidebarCollapsed">Catálogo de Cursos</span>
+      </a>
+      <a *ngIf="rolUsuario === 'admin'" routerLink="/plataforma/logs" routerLinkActive="active" class="nav-item">
+        <span class="icon">📜</span><span class="text" *ngIf="!isSidebarCollapsed">Logs del Sistema</span>
+      </a>
+      
+      <a *ngIf="rolUsuario === 'admin' || rolUsuario === 'tutor'" routerLink="/plataforma/prediccion" routerLinkActive="active" class="nav-item">
+        <span class="icon">🔮</span><span class="text" *ngIf="!isSidebarCollapsed">Predicción IA</span>
+      </a>
+
+      <a *ngIf="rolUsuario === 'tutor'" routerLink="/plataforma/panel-tutor" routerLinkActive="active" class="nav-item">
+        <span class="icon">👨‍🏫</span><span class="text" *ngIf="!isSidebarCollapsed">Mi Panel de Tutor</span>
+      </a>
+
+      <a *ngIf="rolUsuario === 'estudiante'" routerLink="/plataforma/tutorias" routerLinkActive="active" class="nav-item">
+        <span class="icon">🤝</span><span class="text" *ngIf="!isSidebarCollapsed">Buscar Tutor</span>
+      </a>
+
+      <a *ngIf="rolUsuario === 'tutor' || rolUsuario === 'estudiante'" routerLink="/plataforma/mis-citas" routerLinkActive="active" class="nav-item">
+        <span class="icon">📅</span><span class="text" *ngIf="!isSidebarCollapsed">Mis Citas</span>
+      </a>
+
+      <a routerLink="/plataforma/test" routerLinkActive="active" class="nav-item">
+        <span class="icon">📝</span><span class="text" *ngIf="!isSidebarCollapsed">Evaluaciones</span>
+      </a>
+      <a routerLink="/plataforma/foro" routerLinkActive="active" class="nav-item">
+        <span class="icon">💬</span><span class="text" *ngIf="!isSidebarCollapsed">Foro Estudiantil</span>
+      </a>
+
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-info" *ngIf="!isSidebarCollapsed">
+        <div class="avatar">{{ nombreUsuario.charAt(0) | uppercase }}</div>
+        <div class="user-details">
+          <span class="user-name">{{ nombreUsuario }}</span>
+          <span class="user-role">{{ rolUsuario | titlecase }}</span>
+        </div>
+      </div>
+      <div class="avatar" *ngIf="isSidebarCollapsed" title="{{ nombreUsuario }}">
+        {{ nombreUsuario.charAt(0) | uppercase }}
+      </div>
+      <button class="btn-logout" (click)="intentarCerrarSesion()" title="Cerrar Sesión">
+        <span class="icon">🚪</span>
+        <span class="text" *ngIf="!isSidebarCollapsed">Cerrar Sesión</span>
+      </button>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="toggle-btn" (click)="toggleSidebar()">☰</button>
+        <h3 class="welcome-text">¡Bienvenido al panel, {{ nombreUsuario }}! 👋</h3>
+      </div>
+      
+      <div class="topbar-right">
+        <div class="notifications-wrapper" (clickOutside)="isDropdownOpen = false">
+          <!-- Botón de Notificaciones -->
+          <div class="notifications" title="Notificaciones" (click)="toggleDropdown()">
+            <span class="bell-icon">🔔</span>
+            <span class="badge bounce" *ngIf="notificacionesNoLeidas > 0">
+              {{ notificacionesNoLeidas }}
+            </span>
+          </div>
+
+          <!-- Dropdown Flotante de Notificaciones -->
+          <div class="notif-dropdown glass-dropdown animate-dropdown" *ngIf="isDropdownOpen">
+            <div class="dropdown-header">
+              <h4>Notificaciones</h4>
+              <span class="unread-count" *ngIf="notificacionesNoLeidas > 0">{{ notificacionesNoLeidas }} nuevas</span>
+            </div>
+            
+            <div class="dropdown-body">
+              <div class="empty-notif" *ngIf="notificaciones.length === 0">
+                <p>No tienes notificaciones por ahora.</p>
+              </div>
+
+              <div 
+                *ngFor="let notif of notificaciones" 
+                class="notif-item hover-lift-subtle"
+                [class.unread]="!notif.leida"
+                (click)="marcarLeidaYRedirigir(notif)"
+              >
+                <div class="notif-icon" [ngClass]="'tipo-' + notif.tipo">
+                  {{ notif.tipo === 'exito' ? '✅' : (notif.tipo === 'alerta' ? '⚠️' : 'ℹ️') }}
+                </div>
+                <div class="notif-content">
+                  <p>{{ notif.mensaje }}</p>
+                  <span class="notif-time">{{ notif.fecha_creacion | date:'short' }}</span>
+                </div>
+                <div class="unread-dot" *ngIf="!notif.leida"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+    
+    <div class="content-area">
+      <router-outlet></router-outlet>
+    </div>
+    
+  </main>
+</div>
+
+<!-- MODAL TRISTE DE LOGOUT -->
+<div class="sad-modal-overlay" *ngIf="mostrarModalLogout">
+  <div class="sad-modal-content fade-in-up">
+    <div class="sad-emoji">🥺</div>
+    <h3>¿De verdad te vas?</h3>
+    <p>Si cierras sesión ahora, tu racha de aprendizaje te extrañará. ¡Aún puedes aprender algo nuevo hoy!</p>
+    <div class="sad-modal-actions">
+      <button class="btn-cancelar-logout" (click)="cancelarCierreSesion()">¡Me quedo!</button>
+      <button class="btn-confirmar-logout" (click)="confirmarCierreSesion()">Sí, me voy</button>
+    </div>
+  </div>
+</div>

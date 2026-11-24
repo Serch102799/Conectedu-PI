@@ -1,0 +1,404 @@
+/* =========================================
+   VARIABLES VAK DINÁMICAS
+========================================= */
+:host {
+  /* Default (Visual) */
+  --vak-primary: #6366f1;
+  --vak-secondary: #4f46e5;
+  --vak-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+  --vak-bg: #f8fafc;
+  --vak-card-bg: #ffffff;
+  --vak-border: #e2e8f0;
+  --vak-text: #1e293b;
+  --vak-shadow: 0 10px 30px rgba(99, 102, 241, 0.1);
+  --vak-hover-transform: translateY(-5px);
+  --vak-button-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+  --vak-border-radius: 16px;
+}
+
+:host-context(.theme-auditivo) {
+  --vak-primary: #0284c7;
+  --vak-secondary: #0369a1;
+  --vak-gradient: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
+  --vak-bg: #f0f9ff;
+  --vak-card-bg: #ffffff;
+  --vak-border: #bae6fd;
+  --vak-text: #0c4a6e;
+  --vak-shadow: 0 8px 25px rgba(2, 132, 199, 0.08);
+  --vak-hover-transform: scale(1.02);
+  --vak-button-shadow: 0 4px 15px rgba(2, 132, 199, 0.3);
+  --vak-border-radius: 24px;
+}
+
+:host-context(.theme-kinestesico) {
+  --vak-primary: #ea580c;
+  --vak-secondary: #c2410c;
+  --vak-gradient: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+  --vak-bg: #fff7ed;
+  --vak-card-bg: #ffffff;
+  --vak-border: #fed7aa;
+  --vak-text: #7c2d12;
+  --vak-shadow: 8px 8px 16px #fbceb1, -8px -8px 16px #ffffff; /* Neumorfismo */
+  --vak-hover-transform: translateY(-2px) scale(1.01);
+  --vak-button-shadow: 4px 4px 10px #fbceb1, -4px -4px 10px #ffffff;
+  --vak-border-radius: 12px;
+}
+
+/* =========================================
+   GENERAL
+========================================= */
+.dashboard-inicio-container {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: 'Inter', sans-serif;
+  color: var(--vak-text);
+  transition: all 0.5s ease;
+}
+
+.vak-panel {
+  background: var(--vak-card-bg);
+  border-radius: var(--vak-border-radius);
+  padding: 30px;
+  margin-bottom: 24px;
+  border: 1px solid var(--vak-border);
+  box-shadow: var(--vak-shadow);
+  backdrop-filter: blur(10px);
+  transition: all 0.4s ease;
+}
+
+h2 { font-size: 1.8rem; font-weight: 800; margin-bottom: 8px; }
+h3 { font-size: 1.4rem; font-weight: 700; margin-bottom: 16px; }
+
+.vak-indicator {
+  font-size: 1rem;
+  color: var(--vak-primary);
+  font-weight: 600;
+  background: rgba(0,0,0,0.05);
+  padding: 4px 12px;
+  border-radius: 20px;
+  vertical-align: middle;
+}
+
+/* =========================================
+   PROGRESO
+========================================= */
+.progreso-global-box {
+  margin-top: 24px;
+  background: rgba(0,0,0,0.02);
+  padding: 20px;
+  border-radius: var(--vak-border-radius);
+  border: 1px dashed var(--vak-border);
+}
+
+.progreso-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.porcentaje-texto {
+  color: var(--vak-primary);
+  font-weight: 800;
+  font-size: 1.3rem;
+}
+
+.barra-fondo {
+  height: 16px;
+  background-color: #e2e8f0;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.vak-gradient-bar {
+  height: 100%;
+  background: var(--vak-gradient);
+  border-radius: 20px;
+  transition: width 1.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.mensaje-motivacional {
+  margin-top: 12px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  opacity: 0.8;
+}
+
+/* =========================================
+   WIDGETS GRANDES
+========================================= */
+.widgets-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+  margin-bottom: 30px;
+}
+
+.widget-card {
+  background: var(--vak-card-bg);
+  border-radius: var(--vak-border-radius);
+  padding: 28px 24px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  border: 1px solid var(--vak-border);
+  box-shadow: var(--vak-shadow);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s ease;
+  cursor: pointer;
+}
+
+.widget-card:hover {
+  transform: var(--vak-hover-transform);
+}
+
+.widget-icon {
+  width: 65px; height: 65px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  flex-shrink: 0;
+  z-index: 2;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.icon-orange { background: #ffedd5; color: #ea580c; }
+.icon-yellow { background: #fef9c3; color: #ca8a04; }
+.icon-blue { background: #e0f2fe; color: #0284c7; }
+.icon-purple { background: #f3e8ff; color: #9333ea; }
+
+.widget-info {
+  display: flex;
+  flex-direction: column;
+  z-index: 2;
+}
+
+.widget-valor {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--vak-text);
+  line-height: 1.2;
+}
+
+.widget-titulo {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 4px;
+}
+
+/* Decoración abstracta de fondo del widget */
+.widget-deco {
+  position: absolute;
+  right: -20px;
+  bottom: -20px;
+  width: 100px;
+  height: 100px;
+  background: var(--vak-gradient);
+  opacity: 0.05;
+  border-radius: 50%;
+  z-index: 1;
+}
+
+.widget-card:hover .widget-deco {
+  transform: scale(1.5);
+  opacity: 0.08;
+  transition: all 0.5s ease;
+}
+
+/* =========================================
+   ACTIVIDADES
+========================================= */
+.seccion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.btn-vak-primary {
+  background: var(--vak-gradient);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--vak-button-shadow);
+  transition: all 0.3s;
+}
+
+.btn-vak-primary:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+}
+
+.btn-vak-secondary {
+  background: transparent;
+  color: var(--vak-primary);
+  border: 1px solid var(--vak-primary);
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-vak-secondary:hover {
+  background: var(--vak-primary);
+  color: white;
+}
+
+.actividad-item {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  border: 1px solid var(--vak-border);
+  border-radius: 12px;
+  margin-bottom: 12px;
+  transition: all 0.3s ease;
+  background: #fff;
+}
+
+.actividad-item:hover {
+  transform: translateX(5px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+}
+
+.actividad-icono {
+  width: 45px; height: 45px;
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem;
+  margin-right: 16px;
+}
+
+.icon-tutoria { background: #eff6ff; color: #3b82f6; }
+
+.actividad-detalles h4 {
+  margin: 0 0 4px 0;
+  font-size: 1.05rem;
+  color: var(--vak-text);
+}
+
+.actividad-tipo {
+  font-size: 0.85rem;
+  color: #64748b;
+  background: #f1f5f9;
+  padding: 2px 8px;
+  border-radius: 12px;
+}
+
+.actividad-tiempo { margin-left: auto; margin-right: 20px; }
+
+.badge-tiempo {
+  background: #f8fafc;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #475569;
+}
+.badge-urgente { background: #fef2f2; color: #ef4444; }
+
+/* =========================================
+   MODAL DE BIENVENIDA (ENGAGEMENT)
+========================================= */
+.welcome-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(15, 23, 42, 0.8);
+  backdrop-filter: blur(8px);
+  z-index: 2000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.welcome-modal {
+  background: #ffffff; /* Forzamos color blanco luminoso */
+  padding: 40px;
+  border-radius: var(--vak-border-radius);
+  max-width: 450px;
+  text-align: center;
+  box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+  border: 3px solid var(--vak-primary);
+  color: #1e293b; /* Forzamos texto oscuro legible */
+}
+
+.welcome-modal h2 {
+  color: var(--vak-primary); /* Título con el color principal del VAK */
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+.welcome-emoji {
+  font-size: 4.5rem;
+  margin-bottom: 16px;
+  animation: bounce 2s infinite;
+  text-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.welcome-msg {
+  font-size: 1.15rem;
+  color: #475569; /* Gris oscuro para legibilidad */
+  margin: 16px 0 24px;
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+.welcome-stats {
+  background: #f8fafc;
+  padding: 16px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  border: 1px solid #e2e8f0;
+}
+
+.mini-stat {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+}
+
+.mini-stat .label { color: #475569; }
+.mini-stat .value { color: var(--vak-primary); font-size: 1.2rem; }
+
+.animate-pop { animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+
+@keyframes popIn {
+  0% { opacity: 0; transform: scale(0.8); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* Loading */
+.loading-state {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  min-height: 300px; color: #64748b;
+}
+
+.spinner-vak {
+  width: 40px; height: 40px;
+  border: 4px solid #e2e8f0;
+  border-top-color: var(--vak-primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 16px;
+}
+
+@keyframes spin { 100% { transform: rotate(360deg); } }

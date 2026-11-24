@@ -1,0 +1,64 @@
+<div class="admin-container">
+  <div class="header-section">
+    <h2>Mi Panel de Tutor</h2>
+    <p>Gestiona tu perfil público y tus horarios de disponibilidad para los alumnos.</p>
+  </div>
+
+  <div class="dashboard-grid">
+    <div class="card form-card">
+      <h3>Mi Perfil Público</h3>
+      <form [formGroup]="perfilForm" (ngSubmit)="guardarPerfil()">
+        
+        <div class="form-group">
+          <label>Especialidad / Materia Principal</label>
+          <input type="text" formControlName="especialidad" placeholder="Ej: Matemáticas Avanzadas" class="form-control">
+        </div>
+
+        <div class="form-group">
+          <label>Biografía (Acerca de ti)</label>
+          <textarea formControlName="biografia" rows="4" placeholder="Cuéntales a los alumnos un poco sobre ti y tu forma de enseñar..." class="form-control"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Enlace de Reunión (Opcional - Zoom, Meet, Teams)</label>
+          <input type="text" formControlName="enlace_reunion" placeholder="https://zoom.us/j/..." class="form-control">
+        </div>
+
+        <button type="submit" class="btn-submit" [disabled]="perfilForm.invalid">Guardar Perfil</button>
+      </form>
+    </div>
+
+    <div class="card table-card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h3 style="margin: 0;">Mis Horarios de Asesoría</h3>
+        <button class="btn-add" (click)="abrirModalNuevoHorario()">+ Agregar Horario</button>
+      </div>
+
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Día</th>
+            <th>Hora Inicio</th>
+            <th>Hora Fin</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let h of horarios">
+            <td><strong>{{ h.dia_semana }}</strong></td>
+            <td>{{ h.hora_inicio }}</td>
+            <td>{{ h.hora_fin }}</td>
+            <td>
+              <button class="action-btn delete" (click)="eliminarHorario(h.id_disponibilidad)" title="Eliminar">🗑️</button>
+            </td>
+          </tr>
+          <tr *ngIf="horarios.length === 0">
+            <td colspan="4" style="text-align: center; padding: 20px; color: #666;">
+              No tienes horarios registrados. ¡Agrega uno para que los alumnos puedan agendarte!
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,103 @@
+.tutorias-container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.seccion-header { margin-bottom: 2rem; }
+.seccion-header h2 { color: var(--primary-color, #004b93); font-size: 2rem; margin-bottom: 0.5rem; }
+.seccion-header p { color: #666; font-size: 1.1rem; }
+
+/* Grid de Tutores */
+.tutores-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 2rem;
+}
+
+.tutor-card {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  border: 1px solid #eaeaea;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+}
+
+.tutor-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+}
+
+/* Cabecera del tutor */
+.tutor-header {
+  display: flex;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid #f0f0f0;
+  background-color: #fafafa;
+}
+
+.tutor-avatar {
+  font-size: 2.5rem;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1.2rem;
+}
+
+.tutor-info h3 { margin: 0 0 0.3rem 0; color: #333; font-size: 1.2rem; }
+.tutor-materia { color: var(--primary-color, #004b93); font-weight: 600; font-size: 0.9rem; }
+
+/* Cuerpo (Información) */
+.tutor-body {
+  padding: 1.5rem;
+  flex-grow: 1;
+}
+
+.info-bloque {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 1.2rem;
+}
+
+.info-bloque:last-child { margin-bottom: 0; }
+
+.icono-mini {
+  margin-right: 10px;
+  font-size: 1.2rem;
+  margin-top: 2px;
+}
+
+.info-bloque strong { color: #555; font-size: 0.9rem; display: block; margin-bottom: 0.2rem; }
+.info-bloque p { margin: 0; color: #777; font-size: 0.95rem; }
+
+/* Pie (Botón) */
+.tutor-footer {
+  padding: 1.5rem;
+  border-top: 1px solid #f0f0f0;
+}
+
+.btn-agendar {
+  width: 100%;
+  padding: 0.9rem;
+  background-color: var(--primary-color, #004b93);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.05rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-agendar:hover { background-color: #00366b; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

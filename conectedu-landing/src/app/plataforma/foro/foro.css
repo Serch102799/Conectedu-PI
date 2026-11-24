@@ -1,0 +1,163 @@
+.foro-container {
+  animation: fadeIn 0.5s ease-in-out;
+  max-width: 1000px; /* Evita que se estire demasiado en pantallas gigantes */
+  margin: 0 auto;
+}
+
+/* Encabezado */
+.foro-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.header-text h2 {
+  color: var(--primary-color, #004b93);
+  margin-bottom: 0.5rem;
+  font-size: 2rem;
+}
+
+.header-text p {
+  color: #666;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.btn-nuevo-tema {
+  background-color: #f39c12; /* Naranja llamativo */
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: transform 0.2s, background-color 0.2s;
+  box-shadow: 0 4px 10px rgba(243, 156, 18, 0.3);
+}
+
+.btn-nuevo-tema:hover {
+  background-color: #d68910;
+  transform: translateY(-2px);
+}
+
+/* Lista de Temas */
+.lista-temas {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.tema-card {
+  background-color: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  border: 1px solid #eaeaea;
+  transition: box-shadow 0.3s ease;
+}
+
+.tema-card:hover {
+  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+}
+
+/* Contenido del Tema */
+.tema-contenido {
+  flex: 1;
+  padding-right: 2rem;
+}
+
+.tag-categoria {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 0.8rem;
+}
+
+.tema-contenido h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.25rem;
+  color: #333;
+}
+
+.tema-meta {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #888;
+}
+
+.tema-meta strong {
+  color: #555;
+}
+
+/* Acciones y Estadísticas */
+.tema-acciones {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.estadistica {
+  text-align: center;
+}
+
+.estadistica .numero {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--primary-color, #004b93);
+}
+
+.estadistica .label {
+  font-size: 0.8rem;
+  color: #777;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.btn-ver-tema {
+  background-color: transparent;
+  color: var(--primary-color, #004b93);
+  border: 1px solid var(--primary-color, #004b93);
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-ver-tema:hover {
+  background-color: var(--primary-color, #004b93);
+  color: white;
+}
+
+/* Responsividad para móviles */
+@media (max-width: 768px) {
+  .tema-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+  
+  .tema-contenido {
+    padding-right: 0;
+  }
+  
+  .tema-acciones {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

@@ -1,0 +1,93 @@
+<!-- MODAL DE BIENVENIDA -->
+<div class="welcome-overlay" *ngIf="mostrarBienvenida">
+  <div class="welcome-modal animate-pop">
+    <div class="welcome-emoji">{{ emojiBienvenida }}</div>
+    <h2>¡Hola, {{ nombreAlumno }}!</h2>
+    <p class="welcome-msg">{{ mensajeBienvenida }}</p>
+    <div class="welcome-stats">
+      <div class="mini-stat">
+        <span class="label">Tu racha actual:</span>
+        <span class="value">{{ stats[0]?.valor || '0 días' }} 🔥</span>
+      </div>
+    </div>
+    <button class="btn-vak-primary" (click)="cerrarBienvenida()">¡A darle con todo!</button>
+  </div>
+</div>
+
+<div class="dashboard-inicio-container animate-fade" *ngIf="!isLoading">
+
+  <section class="panel-bienvenida vak-panel">
+    <div class="bienvenida-texto">
+      <h2>Mi Progreso Académico <span class="vak-indicator">({{ estiloVak }})</span></h2>
+      <p>Este es tu entorno personalizado. Analiza tu rendimiento y sigue mejorando.</p>
+    </div>
+    
+    <div class="progreso-global-box">
+      <div class="progreso-header">
+        <span>Avance de Cursos General</span>
+        <span class="porcentaje-texto">{{ progresoGeneral }}%</span>
+      </div>
+      <div class="barra-fondo">
+        <div class="barra-llenado vak-gradient-bar" [style.width.%]="progresoGeneral"></div>
+      </div>
+      <p class="mensaje-motivacional" *ngIf="progresoGeneral >= 80">¡Excelente avance! Estás a punto de terminar.</p>
+      <p class="mensaje-motivacional" *ngIf="progresoGeneral < 80 && progresoGeneral >= 40">Vas a buen ritmo, mantén la disciplina.</p>
+      <p class="mensaje-motivacional" *ngIf="progresoGeneral < 40">¡Es hora de ponerle energía! Tú puedes.</p>
+    </div>
+  </section>
+
+  <!-- WIDGETS GRANDES ANIMADOS -->
+  <section class="widgets-grid">
+    <div class="widget-card hover-lift" *ngFor="let stat of stats">
+      <div class="widget-icon" [ngClass]="stat.iconClass">
+        {{ stat.icono }}
+      </div>
+      <div class="widget-info">
+        <span class="widget-valor">{{ stat.valor }}</span>
+        <span class="widget-titulo">{{ stat.titulo }}</span>
+      </div>
+      <div class="widget-deco"></div>
+    </div>
+  </section>
+
+  <section class="actividades-seccion vak-panel">
+    <div class="seccion-header">
+      <h3>Próximas Tutorías</h3>
+      <button class="btn-vak-secondary" routerLink="/plataforma/mis-citas">Ver calendario completo</button>
+    </div>
+
+    <div class="lista-actividades" *ngIf="actividadesProximas.length > 0">
+      <div class="actividad-item hover-lift" *ngFor="let act of actividadesProximas" [class.urgente]="act.urgente">
+        
+        <div class="actividad-icono icon-tutoria">
+          {{ act.tipo === 'Evaluación' ? '📝' : (act.tipo === 'Lectura' ? '📖' : '🤝') }}
+        </div>
+        
+        <div class="actividad-detalles">
+          <h4>{{ act.tarea }}</h4>
+          <span class="actividad-tipo">{{ act.tipo }}</span>
+        </div>
+        
+        <div class="actividad-tiempo">
+          <span class="badge-tiempo badge-urgente">
+            {{ act.tiempo }}
+          </span>
+        </div>
+        
+        <button class="btn-ir btn-vak-primary" routerLink="/plataforma/mis-citas">Ir ➔</button>
+      </div>
+    </div>
+
+    <div class="empty-state" *ngIf="actividadesProximas.length === 0">
+      <div class="empty-icon">🎉</div>
+      <h4>¡Estás al día!</h4>
+      <p>No tienes actividades o citas pendientes por el momento.</p>
+    </div>
+  </section>
+
+</div>
+
+<div class="loading-state" *ngIf="isLoading">
+  <div class="spinner-vak"></div>
+  <p>Conectando con tu entorno de aprendizaje...</p>
+</div>

@@ -1,0 +1,68 @@
+<section class="contact-section">
+  <h2>Contacto</h2>
+  <p>¿Te interesa conocer más sobre nuestra investigación o sumarte a la iniciativa? Escríbenos o visítanos.</p>
+  
+  <div class="contact-layout">
+    
+    <div class="contact-info" appScrollReveal class="reveal-up delay-2">
+      <h3>Nuestra Ubicación</h3>
+      <p><strong>Dirección:</strong> Avenida Universidad 350, 94910 Cuitláhuac, Ver.</p>
+      
+      <div class="map-container">
+        <iframe 
+          src="https://maps.google.com/maps?q=Avenida%20Universidad%20350,%2094910%20Cuitl%C3%A1huac,%20Ver.&t=&z=15&ie=UTF8&iwloc=&output=embed" 
+          width="100%" 
+          height="320" 
+          style="border:0;" 
+          allowfullscreen="" 
+          loading="lazy">
+        </iframe>
+      </div>
+    </div>
+
+    <div class="contact-form-wrapper" appScrollReveal class="reveal-up delay-3">
+      <form [formGroup]="contactoForm" (ngSubmit)="enviarMensaje()" class="contact-form">
+        
+        <div class="form-group">
+          <label for="nombre">Nombre completo</label>
+          <input type="text" id="nombre" formControlName="nombre" placeholder="Tu nombre" 
+                 [class.input-error]="nombreValido">
+          <div *ngIf="nombreValido" class="error-text">
+            <small *ngIf="contactoForm.get('nombre')?.errors?.['required']">El nombre es obligatorio.</small>
+            <small *ngIf="contactoForm.get('nombre')?.errors?.['minlength']">Debe tener al menos 3 caracteres.</small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Correo electrónico</label>
+          <input type="email" id="email" formControlName="email" placeholder="tu@correo.com"
+                 [class.input-error]="emailValido">
+          <div *ngIf="emailValido" class="error-text">
+            <small *ngIf="contactoForm.get('email')?.errors?.['required']">El correo es obligatorio.</small>
+            <small *ngIf="contactoForm.get('email')?.errors?.['email']">Ingresa un correo válido.</small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="mensaje">Mensaje</label>
+          <textarea id="mensaje" formControlName="mensaje" rows="4" placeholder="¿En qué te podemos ayudar?"
+                    [class.input-error]="mensajeValido"></textarea>
+          <div *ngIf="mensajeValido" class="error-text">
+            <small *ngIf="contactoForm.get('mensaje')?.errors?.['required']">El mensaje es obligatorio.</small>
+            <small *ngIf="contactoForm.get('mensaje')?.errors?.['minlength']">Debe tener al menos 10 caracteres.</small>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-submit" [disabled]="contactoForm.invalid || isSubmitting">
+          {{ isSubmitting ? 'Enviando...' : 'Enviar mensaje' }}
+        </button>
+
+        <div *ngIf="showSuccess" class="success-message">
+          ¡Tu mensaje ha sido enviado con éxito! Nos pondremos en contacto contigo pronto.
+        </div>
+
+      </form>
+    </div>
+
+  </div>
+</section>
